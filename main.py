@@ -6,6 +6,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import DocArrayInMemorySearch
 from langchain.chains import RetrievalQA
 from langchain_community.document_loaders import PyPDFDirectoryLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 llm_model = "gpt-4o-mini"
 
@@ -17,6 +18,12 @@ folder_path = os.path.join(script_dir, "docs")
 loader = PyPDFDirectoryLoader(folder_path)
 
 #load all the PDF's
-docs = loader.load()
+documents = loader.load()
 
-print(f"Loaded {len(docs)} pages")
+#print(f"Loaded {len(docs)} pages")
+
+# setting splitter parameters
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150)
+chunks = text_splitter.split_documents(documents)
+
+print(f"Split into {len(chunks)} chunks")
