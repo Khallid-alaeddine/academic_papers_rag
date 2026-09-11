@@ -3,10 +3,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_community.vectorstores import DocArrayInMemorySearch
 from langchain.chains import RetrievalQA
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_qdrant import QdrantVectorStore
 
 llm_model = "gpt-4o-mini"
 
@@ -30,14 +30,17 @@ chunks = text_splitter.split_documents(documents)
 
 # embedding text chunks
 embeddings = OpenAIEmbeddings()
-db = DocArrayInMemorySearch.from_documents(chunks, embeddings)
-
+db = QdrantVectorStore.from_documents(
+    chunks,
+    embeddings,
+    url="http://localhost:6333",
+    collection_name="academic_papers"
+)
 qa = RetrievalQA.from_chain_type(
     llm=ChatOpenAI(temperature=0, model=llm_model),
     chain_type="stuff",
     retriever=db.as_retriever()
 )
-
 query = "What does AIIE measure? Answer in one sentence."
 response = qa.invoke({"query": query})
 print(response["result"])
