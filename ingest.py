@@ -36,11 +36,3 @@ db = QdrantVectorStore.from_documents(
     url="http://localhost:6333",
     collection_name="academic_papers"
 )
-qa = RetrievalQA.from_chain_type(
-    llm=ChatOpenAI(temperature=0, model=llm_model),
-    chain_type="stuff",
-    retriever=db.as_retriever()
-)
-query = "What does AIIE measure? Answer in one sentence."
-response = qa.invoke({"query": query})
-print(response["result"])
