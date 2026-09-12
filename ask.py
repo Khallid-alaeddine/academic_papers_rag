@@ -24,14 +24,28 @@ qa = RetrievalQA.from_chain_type(
     retriever=db.as_retriever(),
     return_source_documents=True
 )
+
+'''
+# test question
 query = "What does AIIE measure? Answer in one sentence."
 response = qa.invoke({"query": query})
-# Print a response
-print(response["result"])
+'''
 
-# Loop over the retrieved source chunks and print each one's file name and page number  
-print("\nSources:")
-for doc in response["source_documents"]:
-    filename = os.path.basename(doc.metadata["source"])
-    page = doc.metadata.get("page_label", doc.metadata["page"])
-    print(f"- {filename}, page {page}")
+# user query input loop 
+while True:
+    query = input("Ask a question (or type 'exit' to quit): ")
+    if query == "exit":
+        break
+    response = qa.invoke({"query": query})
+    # Print a response
+    print(response["result"])
+    # Loop over the retrieved source chunks and print each one's file name and page number  
+    print("\nSources:")
+    for doc in response["source_documents"]:
+        filename = os.path.basename(doc.metadata["source"])
+        page = doc.metadata.get("page_label", doc.metadata["page"])
+        print(f"- {filename}, page {page}")
+
+
+
+
