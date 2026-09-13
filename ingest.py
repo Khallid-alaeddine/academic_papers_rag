@@ -10,6 +10,9 @@ from langchain_qdrant import QdrantVectorStore
 
 llm_model = "gpt-4o-mini"
 
+# Qdrant connection URL
+qdrant_url = os.getenv("QDRANT_URL", "http://localhost:6333")
+
 # Folder path with 4 papers as PDF
 script_dir = os.path.dirname(os.path.abspath(__file__))
 folder_path = os.path.join(script_dir, "docs")
@@ -33,6 +36,6 @@ embeddings = OpenAIEmbeddings()
 db = QdrantVectorStore.from_documents(
     chunks,
     embeddings,
-    url="http://localhost:6333",
+    url=qdrant_url,
     collection_name="academic_papers"
 )

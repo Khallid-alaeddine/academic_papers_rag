@@ -10,10 +10,13 @@ llm_model = "gpt-4o-mini"
 # embedding model for upcoming query
 embeddings = OpenAIEmbeddings()
 
+# Qdrant connection URL 
+qdrant_url = os.getenv("QDRANT_URL", "http://localhost:6333")
+
 #connect to the existing Qdrant collection (read only)
 db = QdrantVectorStore.from_existing_collection(
     embedding=embeddings,
-    url="http://localhost:6333",
+    url=qdrant_url,
     collection_name="academic_papers"
 )
 
