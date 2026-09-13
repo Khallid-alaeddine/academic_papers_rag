@@ -5,3 +5,4 @@ venv/
 .venv/
 sandbox/
 qdrant_storage/
+build_log.txt
