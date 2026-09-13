@@ -45,7 +45,7 @@ while True:
     # Loop over the retrieved source chunks and print each one's file name and page number  
     print("\nSources:")
     for doc in response["source_documents"]:
-        filename = os.path.basename(doc.metadata["source"])
+        filename = os.path.basename(doc.metadata["source"].replace("\\", "/"))
         page = doc.metadata.get("page_label", doc.metadata["page"])
         print(f"- {filename}, page {page}")
 
