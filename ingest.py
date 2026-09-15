@@ -37,5 +37,6 @@ db = QdrantVectorStore.from_documents(
     chunks,
     embeddings,
     url=qdrant_url,
-    collection_name="academic_papers"
+    collection_name="academic_papers",
+    force_recreate=True,
 )
